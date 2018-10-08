@@ -13,7 +13,8 @@ import { UserinfoComponent } from './userinfo/userinfo.component';
     UserinfoComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
