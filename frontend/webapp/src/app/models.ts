@@ -11,7 +11,7 @@ export class UserInfo {
   "contact": string;
   "email":string;
   "phone_number": string;
-  "aliases": [];
+  "aliases": string[];
   "tier": number;
   "status": string;
   "is_provisioning_allowed": boolean;
@@ -39,8 +39,8 @@ export class UserInfo {
   "updated_at": string
 }
 
-export class Device {
-    "data" : [];
+export class Devices {
+    "data" : Device[];
     "total_count" : number;
     "limit" : number;
     "after" : string;
@@ -48,3 +48,36 @@ export class Device {
     "object" : string;
     "order" : string;
   }
+
+export class Device {
+    "account_id": string;
+    "auto_update": boolean;
+    "bootstrap_expiration_date": string;
+    "bootstrapped_timestamp": string;
+    "ca_id": string;
+    "connector_expiration_date": string;
+    "created_at": string;
+    "custom_attributes": string; // this should be an object
+    "deployed_state": string;
+    "deployment": string;
+    "description": string;
+    "device_class": string;
+    "device_execution_mode": number;
+    "device_key": string;
+    "endpoint_name": string;
+    "endpoint_type": string;
+    "enrolment_list_timestamp": string;
+    "etag": string;
+    "firmware_checksum": string;
+    "host_gateway": string;
+    "id": string;
+    "manifest": string;
+    "manifest_timestamp": string;
+    "mechanism": string;
+    "mechanism_url": string;
+    "name": string;
+    "object": string;
+    "serial_number": string;
+    "state": string;
+    "updated_at": string;
+    "vendor_id": string}
