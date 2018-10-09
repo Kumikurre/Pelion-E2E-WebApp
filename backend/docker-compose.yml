@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+  db:
+    image: mongo:latest
+    volumes: 
+      - /data/db:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - mongonet
+
+  web: 
+    build: ./app
+    environment:
+      - WAIT_COMMAND=1
+    ports:
+      - "3000:3000"
+    networks:
+      - mongonet
+    depends_on: 
+      - db
+
+
+networks:
+  mongonet:
+    driver: bridge
