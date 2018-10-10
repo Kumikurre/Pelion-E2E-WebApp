@@ -12,6 +12,8 @@ def create_app():
     def get_exams():
         headers = {'Authorization': 'Bearer ak_1MDE2NWM3YzQ5ZDVlMGEzN2UzYzYwODJmMDAwMDAwMDA016619a9c2fd2200d95670ee00000000awMhr7voDwFFHRNqjOpVKW38FcJN7r02'}
         resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
+        print(resp)
+        print(jsonify(resp))
         return jsonify(resp)
 
 
