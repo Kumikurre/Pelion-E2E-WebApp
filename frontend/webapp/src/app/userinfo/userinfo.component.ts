@@ -11,21 +11,21 @@ export class UserinfoComponent implements OnInit {
   constructor(private userinfoService: UserinfoService) { }
 
   ngOnInit() {
-    this.userinfo = this.userinfoService.getUserData()
-    this.getUserData()
+    this.userinfo = this.userinfoService.getUserData();
+    this.getUserData();
   }
 
-  getUserData(){
+  getUserData() {
     this.userinfoService.getUserData().subscribe(val => console.log(val));
   }
 
-  reloadData(){
-    this.userinfo = this.userinfoService.getUserData()
-    console.log(this.userinfoService.getUserData())
+  reloadData() {
+    this.userinfo = this.userinfoService.getUserData().subscribe(val => console.log(val));
+    console.log(this.userinfoService.getUserData().subscribe(val => console.log(val)));
   }
 
   logStuff() {
-    console.log('Logging...')
-    console.log(this.userinfo)
+    console.log('Logging...');
+    console.log(this.userinfo);
   }
 }

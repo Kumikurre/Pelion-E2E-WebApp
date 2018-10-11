@@ -11,10 +11,10 @@ export class UserinfoService {
   constructor(private http: HttpClient) { }
 
   private headers = new HttpHeaders({'Authorization': 'Bearer PUT KEY HERE'});
-  private apiUrl = 'https://api.us-east-1.mbedcloud.com/v3/devices/';
+  private apiUrl = 'http://127.0.0.1:5000/Pelion_E2E_Api';
 
   getUserData() {
-    return this.http.get(this.apiUrl + 'v3/accounts/me', {
+    return this.http.get(this.apiUrl + '/account/me', {
       headers: {
       'Authorization': 'Bearer ak_1MDE2NWM3YzQ5ZDVlMGEzN2UzYzYwODJmMDAwMDAwMDA016619a9c2fd2200d95670ee00000000awMhr7voDwFFHRNqjOpVKW38FcJN7r02'
     }});
