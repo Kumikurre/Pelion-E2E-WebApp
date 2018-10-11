@@ -15,12 +15,21 @@ def create_app():
     class TodoList(Resource):
         def get(self):
             headers = {'Authorization': 'Bearer ak_1MDE2NWM3YzQ5ZDVlMGEzN2UzYzYwODJmMDAwMDAwMDA016619a9c2fd2200d95670ee00000000awMhr7voDwFFHRNqjOpVKW38FcJN7r02'}
-            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/accounts/me', headers=headers)
             print('resp: ', resp)
             print('resp.text: ', resp.text)
             #print(jsonify(resp))
             return resp.text
 
+    @ns.route('/devices')
+    class TodoList(Resource):
+        def get(self):
+            headers = {'Authorization': 'Bearer ak_1MDE2NWM3YzQ5ZDVlMGEzN2UzYzYwODJmMDAwMDAwMDA016619a9c2fd2200d95670ee00000000awMhr7voDwFFHRNqjOpVKW38FcJN7r02'}
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
+            print('resp: ', resp)
+            print('resp.text: ', resp.text)
+            #print(jsonify(resp))
+            return resp.text
 
         # @app.route('/exams', methods=['POST'])
         # def add_exam():
