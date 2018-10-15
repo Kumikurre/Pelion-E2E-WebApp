@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserinfoService } from '../userinfo.service';
 import { UserInfo } from '../models';
-import { Credentials } from '../../apikey';
+import { apikey } from '../../apikey';
 
 @Component({
   selector: 'app-userinfo',
@@ -13,7 +13,7 @@ export class UserinfoComponent implements OnInit {
   constructor(private userinfoService: UserinfoService) { }
 
   ngOnInit() {
-    console.log(Credentials);
+    console.log(apikey);
     this.getUserData();
   }
 
