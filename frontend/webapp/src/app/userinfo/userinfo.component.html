@@ -1,8 +1,10 @@
+<div *ngIf="userinfo" id="userinfo">
+  <ul>
+  <li>Welcome {{userinfo.display_name}}!</li>
+  <li>{{userinfo.company}}</li>
+  <li>{{userinfo.email}}</li>
+  </ul>
+</div>
+
 <button (click)="logStuff()">Logstuff</button>
 <button (click)="reloadData()">ReloadData</button>
-
-<div *ngIf="userinfo" id="userinfo">
-  <p>Welcome {{userinfo.display_name}}!</p>
-  <p>{{userinfo.company}}</p>
-  <p>{{userinfo.email}}</p>
-</div>

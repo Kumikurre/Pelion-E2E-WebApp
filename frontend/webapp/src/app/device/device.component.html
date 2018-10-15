@@ -1,7 +1,21 @@
-<button (click)="logStuff()">Log Devices</button>
-<div *ngIf="devicelist" >
-  <ul *ngFor="let device of devicelist.data">
-    <li>{{device.id}}</li>
-  </ul>
-</div>
+<div id="devicecomponent">
+  <button (click)="logStuff()">Log Devices</button>
 
+  <div *ngIf="devicelist">
+    <table id="devices">
+      <tr>
+        <th>Name</th>
+        <th>Device type</th>
+        <th>State</th>
+        <th>Created</th>
+      </tr>
+      <tr *ngFor="let device of devicelist.data">
+        <td>{{device.name}}</td>
+        <td>{{device.device_type}}</td>
+        <td>{{device.state}}</td>
+        <td>{{device.created_at}}</td>
+      </tr>
+
+    </table>
+  </div>
+</div>
