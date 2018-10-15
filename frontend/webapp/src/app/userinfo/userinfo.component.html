@@ -5,3 +5,8 @@
 <button (click)="reloadData()">ReloadData</button>
 
 <p>{{userinfo | json}}</p>
+<hr>
+<div *ngIf="userinfo" id="userinfo">
+  <p>{{userinfo.company}}</p>
+  <p></p>
+</div>

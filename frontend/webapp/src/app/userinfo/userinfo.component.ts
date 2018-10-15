@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserinfoService } from '../userinfo.service';
+import { UserInfo } from '../models';
+import { Credentials } from '../../apikey';
 
 @Component({
   selector: 'app-userinfo',
@@ -11,16 +13,16 @@ export class UserinfoComponent implements OnInit {
   constructor(private userinfoService: UserinfoService) { }
 
   ngOnInit() {
-    this.userinfo = this.userinfoService.getUserData();
+    console.log(Credentials);
     this.getUserData();
   }
 
   getUserData() {
-    this.userinfoService.getUserData().subscribe(val => console.log(val));
+    this.userinfoService.getUserData().subscribe((data: UserInfo) => {this.userinfo = data; });
   }
 
   reloadData() {
-    this.userinfo = this.userinfoService.getUserData().subscribe(val => console.log(val));
+    this.userinfoService.getUserData().subscribe(val => console.log(val));
     console.log(this.userinfoService.getUserData().subscribe(val => console.log(val)));
   }
 
@@ -28,4 +30,5 @@ export class UserinfoComponent implements OnInit {
     console.log('Logging...');
     console.log(this.userinfo);
   }
+
 }
