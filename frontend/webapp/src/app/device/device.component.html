@@ -1,3 +1,9 @@
-<p>
-  device works!
-</p>
+<button (click)="logStuff()">Log Devices</button>
+<div *ngIf="devicelist" >
+  <ul *ngFor="let device of devicelist.data">
+    <li>{{device.endpoint_name}}</li>
+  </ul>
+</div>
+
+
+<div>{{devicelist}}</div>

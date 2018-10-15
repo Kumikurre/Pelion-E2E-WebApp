@@ -1,12 +1,8 @@
-<p>
-  userinfo works!
-</p>
 <button (click)="logStuff()">Logstuff</button>
 <button (click)="reloadData()">ReloadData</button>
 
-<p>{{userinfo | json}}</p>
-<hr>
 <div *ngIf="userinfo" id="userinfo">
+  <p>Welcome {{userinfo.display_name}}!</p>
   <p>{{userinfo.company}}</p>
-  <p></p>
+  <p>{{userinfo.email}}</p>
 </div>
