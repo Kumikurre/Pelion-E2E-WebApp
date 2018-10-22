@@ -8,7 +8,6 @@ import requests
 
 def create_app():
     app = Flask(__name__)
-
     CORS(app)
     api = Api(app)
     ns = api.namespace('Pelion_E2E_Api', description='IoT device API')
