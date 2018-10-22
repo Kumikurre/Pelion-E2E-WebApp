@@ -13,16 +13,22 @@ export class DeviceComponent implements OnInit {
   constructor(private deviceservice: DeviceService) { }
 
   ngOnInit() {
-    console.log('Device init');
+    // Get devices on init
     this.getDevices();
   }
 
   getDevices() {
+    // Pulls the current devices from the API. Assigns return value to this.devicelist
     this.deviceservice.getDevices().subscribe((data: Devices) => {this.devicelist = data; });
-    console.log('GetDevices');
+  }
+
+  reloadData() {
+    // Executes getDevices again
+    this.deviceservice.getDevices().subscribe((data: Devices) => {this.devicelist = data; });
   }
 
   logStuff() {
+    // Test function for logging devicelist to console
     console.log(this.devicelist);
   }
 }

@@ -1,5 +1,6 @@
 <div id="devicecomponent">
   <button (click)="logStuff()">Log Devices</button>
+  <button (click)="reloadData()">Reload Data</button>
 
   <div *ngIf="devicelist">
     <table id="devices">
@@ -7,12 +8,16 @@
         <th>Name</th>
         <th>Device type</th>
         <th>State</th>
-        <th>Created</th>
+        <th>Deployed State</th>
+        <th>Updated at</th>
+        <th>Created at</th>
       </tr>
       <tr *ngFor="let device of devicelist.data">
         <td>{{device.name}}</td>
         <td>{{device.device_type}}</td>
         <td>{{device.state}}</td>
+        <td>{{device.deployed_state}}</td>
+        <td>{{device.updated_at}}</td>
         <td>{{device.created_at}}</td>
       </tr>
 

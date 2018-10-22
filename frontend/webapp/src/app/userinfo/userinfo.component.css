@@ -8,6 +8,7 @@ ul {
 
 li {
     float: left;
+    margin-right: 25px;
 }
 
 li a {
