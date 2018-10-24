@@ -13,17 +13,27 @@ def create_app():
     ns = api.namespace('Pelion_E2E_Api', description='IoT device API')
 
     @ns.route('/account/me')
-    class TodoList(Resource):
+    class user_info(Resource):
         def get(self):
+            """ User info for the account """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/accounts/me', headers=headers)
             return resp.json()
 
     @ns.route('/devices')
-    class TodoList(Resource):
+    class device(Resource):
         def get(self):
+            """ Lists all devices """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
+            return resp.json()
+
+    @ns.route('/endpoints/<string:device_id>/<string:endpoint_str>')
+    class endpoint(Resource):
+        def get(self):
+            """ Lists resource endpoints of a single device """
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/endpoints/' + device_id + endpoint_str, headers=headers)
             return resp.json()
 
     return app
