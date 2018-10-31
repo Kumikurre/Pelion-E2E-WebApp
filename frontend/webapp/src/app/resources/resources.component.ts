@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Devices } from '../models';
 import { ResourceService } from '../resource.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 import { apikey } from '../../apikey';
 
 @Component({
@@ -11,15 +13,29 @@ import { apikey } from '../../apikey';
 export class ResourcesComponent implements OnInit {
   public endpoints;
   public device;
-  constructor(private resourceservice: ResourceService) { }
+  constructor(private resourceservice: ResourceService,
+              private route: ActivatedRoute,
+              private location: Location
+              ) { }
 
   ngOnInit() {
     this.getResources();
   }
 
   getResources() {
-    // Pulls the current devices from the API. Assigns return value to this.devicelist
-    this.resourceservice.getResources(this.device.id).subscribe((endpoints: any) => {this.endpoints = endpoints; });
+    // Pulls the current resources from the API. Assigns return value to this.resources
+    const id = this.route.snapshot.paramMap.get('deviceid');
+    this.device = this.route.snapshot.paramMap.get('deviceid');
+    this.resourceservice.getResources(id).subscribe((endpoints: any) => {this.endpoints = endpoints; });
   }
+
+  logStuff() {
+    console.log(this.endpoints);
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
 
 }

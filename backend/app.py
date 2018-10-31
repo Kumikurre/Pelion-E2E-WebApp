@@ -29,12 +29,12 @@ def create_app():
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
             return resp.json()
 
-    @ns.route('/endpoints/<string:device_id>/<string:endpoint_str>')
+    @ns.route('/endpoints/<device_id>')
     class endpoint(Resource):
-        def get(self):
+        def get(self, device_id):
             """ Lists resource endpoints of a single device """
             headers = {'Authorization': Credentials.apikey}
-            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/endpoints/' + device_id + '/' + endpoint_str, headers=headers)
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/endpoints/' + device_id, headers=headers)
             return resp.json()
 
     @ns.route('/callback/<callback_id>')

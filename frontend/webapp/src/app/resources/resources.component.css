@@ -1,0 +1,41 @@
+#endpoints {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#endpoints td, #endpoints th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#endpoints tr:nth-child(even){background-color: #f2f2f2;}
+
+#endpoints tr:hover {background-color: #ddd;}
+
+#endpoints th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #50afaa;
+    color: white;
+}
+
+#resourcecomponent {
+    margin: 10px;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}

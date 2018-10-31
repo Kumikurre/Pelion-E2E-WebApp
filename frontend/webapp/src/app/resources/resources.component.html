@@ -1,3 +1,23 @@
-<p>
-  resources works!
-</p>
+<div id="resourcecomponent">
+    <button (click)="logStuff()">Log endpoints</button>
+  
+    <div *ngIf="endpoints">
+      <table id="endpoints">
+        <tr>
+          <th>Uri</th>
+          <th>Type</th>
+          <th>Rt</th>
+          <th></th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let endpoint of endpoints">
+          <td>{{endpoint.uri}}</td>
+          <td>{{endpoint.type}}</td>
+          <td>{{endpoint.rt}}</td>
+          <td><button>Show data</button></td>
+          <td><button>Subscribe</button></td>
+        </tr>
+  
+      </table>
+    </div>
+  </div>
