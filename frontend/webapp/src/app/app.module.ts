@@ -5,16 +5,20 @@ import { HttpClientModule }    from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { DeviceComponent } from './device/device.component';
 import { UserinfoComponent } from './userinfo/userinfo.component';
+import { AppRoutingModule } from './app-routing.module';
+import { ResourcesComponent } from './resources/resources.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeviceComponent,
-    UserinfoComponent
+    UserinfoComponent,
+    ResourcesComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

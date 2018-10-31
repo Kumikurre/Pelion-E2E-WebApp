@@ -10,6 +10,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
     api = Api(app)
+    mongo = db_api('localhost', 27017)
     ns = api.namespace('Pelion_E2E_Api', description='IoT device API')
 
     @ns.route('/account/me')
@@ -33,8 +34,15 @@ def create_app():
         def get(self):
             """ Lists resource endpoints of a single device """
             headers = {'Authorization': Credentials.apikey}
-            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/endpoints/' + device_id + endpoint_str, headers=headers)
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/endpoints/' + device_id + '/' + endpoint_str, headers=headers)
             return resp.json()
+
+    @ns.route('/callback/<callback_id>')
+    class callback(Resource):
+        def put(self, callback_id):
+            payload = api.payload
+            post_ids = db_api.insert_data(payload)
+            return post_ids
 
     return app
 
