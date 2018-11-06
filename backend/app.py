@@ -37,11 +37,48 @@ def create_app():
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/endpoints/' + device_id, headers=headers)
             return resp.json()
 
-    @ns.route('/callback/<callback_id>')
+    @ns.route('/subscriptions/<device_id>/<endpoint>')
+    class subscribe(Resource):
+        def put(self, device_id, endpoint):
+            headers = {'Authorization': Credentials.apikey}
+            service_address = 'IP ADDRESS HERE'
+            callback_endpoint = device_id + '/' + endpoint
+            payload = {"url": service_address + callback_endpoint}
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
+            return resp
+        
+        def get(self, device_id, endpoint):
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
+            return resp
+        
+        def delete(self, device_id, endpoint):
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
+            return resp
+
+    @ns.route('/subscriptions/<device_id>')
+    class subscription(Resource):
+        def put(self, device_id):
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
+            return resp
+
+        def get(self):
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
+            return resp
+        
+        def delete(self):
+            headers = {'Authorization': Credentials.apikey}
+            resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
+            return resp
+        
+    @ns.route('/callback/<device_id>/<callback_id>')
     class callback(Resource):
-        def put(self, callback_id):
+        def put(self, callback_id, device_id):
             payload = api.payload
-            post_ids = db_api.insert_data(payload)
+            post_ids = db_api.insert_data(payload, collection=device_id)
             return post_ids
 
     return app
