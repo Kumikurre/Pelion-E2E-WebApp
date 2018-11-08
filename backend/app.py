@@ -87,6 +87,9 @@ def create_app():
             return resp
         
     @ns.route('/callback/<device_id>/<callback_id>')
+    """
+    Callback url for receiving notifications from Pelion
+    """
     class callback(Resource):
         def put(self, callback_id, device_id):
             payload = api.payload
