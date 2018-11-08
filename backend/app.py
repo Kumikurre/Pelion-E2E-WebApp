@@ -15,6 +15,9 @@ def create_app():
 
     @ns.route('/account/me')
     class user_info(Resource):
+        """
+        Endpoint for querying account data
+        """
         def get(self):
             """ User info for the account """
             headers = {'Authorization': Credentials.apikey}
@@ -23,6 +26,9 @@ def create_app():
 
     @ns.route('/devices')
     class device(Resource):
+        """
+        Endpoint for querying device data
+        """
         def get(self):
             """ Lists all devices """
             headers = {'Authorization': Credentials.apikey}
@@ -32,13 +38,18 @@ def create_app():
     @ns.route('/endpoints/<device_id>')
     class endpoint(Resource):
         def get(self, device_id):
-            """ Lists resource endpoints of a single device """
+            """ 
+            Lists resource endpoints of a single device 
+            """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/endpoints/' + device_id, headers=headers)
             return resp.json()
 
     @ns.route('/subscriptions/<device_id>/<endpoint>')
     class subscribe(Resource):
+        """
+        Endpoint manipulates subscriptions
+        """
         def put(self, device_id, endpoint):
             headers = {'Authorization': Credentials.apikey}
             service_address = 'IP ADDRESS HERE'
@@ -50,6 +61,7 @@ def create_app():
         def get(self, device_id, endpoint):
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
+            print(resp.status)
             return resp
         
         def delete(self, device_id, endpoint):
