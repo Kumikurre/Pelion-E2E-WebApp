@@ -19,6 +19,29 @@ export class ResourceService {
       'Authorization': apikey
     }});
   }
+
+  setSubscription(endpoint) {
+    console.log(this.apiUrl + '/subscriptions/' + endpoint);
+    return this.http.put(this.apiUrl + '/subscriptions/' + endpoint, {
+      headers: {
+      'Authorization': apikey
+    }});
+  }
+
+  getSubscriptions() {
+    return this.http.get(this.apiUrl + '/subscriptions/', {
+      headers: {
+      'Authorization': apikey
+    }});
+  }
+
+  deleteSubscription(endpoint) {
+    return this.http.delete(this.apiUrl + '/subscriptions/' + endpoint, {
+      headers: {
+      'Authorization': apikey
+    }});
+  }
+
 }
 
 

@@ -14,7 +14,8 @@ import { apikey } from '../../apikey';
 export class ResourcesComponent implements OnInit {
   public endpoints;
   public device;
-  public str_id;
+  public str_endpoint;
+  public subscriptions;
   private apiUrl = 'http://127.0.0.1:5000/Pelion_E2E_Api';
   constructor(private resourceservice: ResourceService,
               private route: ActivatedRoute,
@@ -35,18 +36,17 @@ export class ResourcesComponent implements OnInit {
 
   setSubscription(endpoint) {
     const re = /\//gi;
-    const id = this.route.snapshot.paramMap.get('deviceid');
-    this.str_id = id.replace(id, '_');
-    const body = {'url': this.str_id};
-    console.log(this.str_id);
-    this.http.put(this.apiUrl + '/v2/subscriptions/' + id + endpoint, {
-      headers: {
-      'Authorization': apikey
-    }});
-    this.http.put(this.apiUrl + '/v2/notification/callback', body, {
-      headers: {
-      'Authorization': apikey
-    }});
+    this.str_endpoint = endpoint.replace(re, '_');
+    this.str_endpoint = this.str_endpoint.replace('_', '');
+    console.log('last', this.str_endpoint);
+    console.log('setting subscription', this.str_endpoint);
+    const stuff = this.resourceservice.setSubscription(this.str_endpoint);
+    console.log(stuff);
+  }
+
+  getSubscriptions() {
+    console.log('getting all subscriptions');
+    this.resourceservice.getSubscriptions().subscribe((subscriptions: any) => {this.subscriptions = subscriptions; });
   }
 
   logStuff() {
@@ -56,6 +56,5 @@ export class ResourcesComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-
 
 }
