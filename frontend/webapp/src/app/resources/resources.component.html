@@ -15,7 +15,7 @@
           <td>{{endpoint.type}}</td>
           <td>{{endpoint.rt}}</td>
           <td><button>Show data</button></td>
-          <td><button>Subscribe</button></td>
+          <td><button (click)="setSubscription(endpoint.uri)">Subscribe</button></td>
         </tr>
   
       </table>

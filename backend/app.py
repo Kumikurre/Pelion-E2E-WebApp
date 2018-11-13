@@ -87,10 +87,10 @@ def create_app():
             return resp
         
     @ns.route('/callback/<device_id>/<callback_id>')
-    """
-    Callback url for receiving notifications from Pelion
-    """
     class callback(Resource):
+        """
+        Callback url for receiving notifications from Pelion
+        """
         def put(self, callback_id, device_id):
             payload = api.payload
             post_ids = db_api.insert_data(payload, collection=device_id)
@@ -100,4 +100,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=False)
