@@ -13,7 +13,7 @@
         <th>Created at</th>
       </tr>
       <tr *ngFor="let device of devicelist.data">
-        <td><a routerLink="/resources/{{device.name}}">{{device.name}}</a></td>
+        <td><a *ngIf="(device.state == 'registered')" routerLink="/resources/{{device.name}}">{{device.name}}</a><a *ngIf="(device.state == 'deregistered')">{{device.name}}</a></td>
         <td>{{device.device_type}}</td>
         <td>{{device.state}}</td>
         <td>{{device.deployed_state}}</td>

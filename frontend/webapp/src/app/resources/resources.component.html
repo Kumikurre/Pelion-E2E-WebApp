@@ -1,12 +1,13 @@
 <div id="resourcecomponent">
     <button (click)="logStuff()">Log endpoints</button>
-   {{last_subscription}}
+
     <div *ngIf="endpoints">
       <table id="endpoints">
         <tr>
           <th>Uri</th>
           <th>Type</th>
           <th>Rt</th>
+          <th>Subscribed</th>
           <th></th>
           <th></th>
         </tr>
@@ -14,8 +15,9 @@
           <td>{{endpoint.uri}}</td>
           <td>{{endpoint.type}}</td>
           <td>{{endpoint.rt}}</td>
+          <td><span *ngIf="(endpoint.uri == subscriptions)">Yes</span></td>
           <td><button>Show data</button></td>
-          <td><button (click)="setSubscription(endpoint.uri)">Subscribe</button></td>
+          <td><button *ngIf="(endpoint.obs == true)" (click)="setSubscription(endpoint.uri)">Subscribe</button></td>
         </tr>
   
       </table>

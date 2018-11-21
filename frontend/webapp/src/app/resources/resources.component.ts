@@ -26,6 +26,7 @@ export class ResourcesComponent implements OnInit {
 
   ngOnInit() {
     this.getResources();
+    this.getSubscriptions();
   }
 
   getResources() {
@@ -43,16 +44,18 @@ export class ResourcesComponent implements OnInit {
     
     this.resourceservice.setSubscription(this.device, this.str_endpoint).subscribe((last_subscription: any) => {this.last_subscription = last_subscription; });
     // const stuff = this.resourceservice.setSubscription(this.str_endpoint);
-    console.log(this.last_subscription);
+    console.log(this.subscriptions);
+    this.getSubscriptions();
   }
 
   getSubscriptions() {
     console.log('getting all subscriptions');
-    this.resourceservice.getSubscriptions().subscribe((subscriptions: any) => {this.subscriptions = subscriptions; });
+    this.resourceservice.getSubscriptions(this.device).subscribe((subscriptions: any) => {this.subscriptions = subscriptions; });
   }
 
   logStuff() {
     console.log(this.endpoints);
+    console.log(this.subscriptions);
   }
 
   goBack(): void {

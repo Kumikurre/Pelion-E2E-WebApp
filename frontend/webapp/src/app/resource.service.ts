@@ -28,8 +28,8 @@ export class ResourceService {
     }});
   }
 
-  getSubscriptions() {
-    return this.http.get(this.apiUrl + '/subscriptions/', {
+  getSubscriptions(device_id) {
+    return this.http.get(this.apiUrl + '/subscriptions/' + device_id, {
       headers: {
       'Authorization': apikey
     }});

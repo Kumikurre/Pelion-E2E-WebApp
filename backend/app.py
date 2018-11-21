@@ -5,7 +5,7 @@ from apikey import Credentials
 from DBactions import db_api
 import requests
 
-service_address = '85.23.34.102'
+service_address = '85.23.119.250'
 mongo = db_api('localhost', 5051)
 
 def create_app():
@@ -55,10 +55,11 @@ def create_app():
         def put(self, device_id, endpoint_id):
             print('CALLING PUT SUBSCRIPTION: ', endpoint_id)
             new_endpoint_id = endpoint_id.replace('_', '/')
-            print(new_endpoint_id)
+            print('new endpoint id ; ',new_endpoint_id)
             headers = {'Authorization': Credentials.apikey}
             payload = {"url": service_address + '/callback'}
             resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers, data=payload)
+            print('resp.json(): ',resp.json())
             return resp.json()
         
         def get(self, device_id, endpoint):
@@ -76,13 +77,17 @@ def create_app():
     class subscription(Resource):
         def put(self, device_id, endpoint_id):
             headers = {'Authorization': Credentials.apikey}
-            resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + endpoint_id, headers=headers)
+            resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
             return resp.json()
 
-        def get(self):
+        def get(self, device_id):
+            print('Getting subscriptions from device:', device_id)
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
-            return resp
+            print('subscriptions for device: ', device_id, ': ', resp.text)
+            method_list = [func for func in dir(resp) if callable(getattr(resp, func))]
+            print(method_list)
+            return resp.text
         
         def delete(self):
             headers = {'Authorization': Credentials.apikey}
