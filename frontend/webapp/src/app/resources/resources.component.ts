@@ -16,6 +16,7 @@ export class ResourcesComponent implements OnInit {
   public device;
   public str_endpoint;
   public subscriptions;
+  public last_subscription;
   private apiUrl = 'http://127.0.0.1:5000/Pelion_E2E_Api';
   constructor(private resourceservice: ResourceService,
               private route: ActivatedRoute,
@@ -38,10 +39,11 @@ export class ResourcesComponent implements OnInit {
     const re = /\//gi;
     this.str_endpoint = endpoint.replace(re, '_');
     this.str_endpoint = this.str_endpoint.replace('_', '');
-    console.log('last', this.str_endpoint);
-    console.log('setting subscription', this.str_endpoint);
-    const stuff = this.resourceservice.setSubscription(this.str_endpoint);
-    console.log(stuff);
+
+    
+    this.resourceservice.setSubscription(this.device, this.str_endpoint).subscribe((last_subscription: any) => {this.last_subscription = last_subscription; });
+    // const stuff = this.resourceservice.setSubscription(this.str_endpoint);
+    console.log(this.last_subscription);
   }
 
   getSubscriptions() {

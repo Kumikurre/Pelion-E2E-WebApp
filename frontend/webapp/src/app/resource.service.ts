@@ -20,9 +20,9 @@ export class ResourceService {
     }});
   }
 
-  setSubscription(endpoint) {
-    console.log(this.apiUrl + '/subscriptions/' + endpoint);
-    return this.http.put(this.apiUrl + '/subscriptions/' + endpoint, {
+  setSubscription(deviceid, endpoint) {
+    console.log('PUT to this URL: ', this.apiUrl + '/subscriptions/' + deviceid + '/' + endpoint);
+    return this.http.put(this.apiUrl + '/subscriptions/' + deviceid + '/' + endpoint, {
       headers: {
       'Authorization': apikey
     }});
