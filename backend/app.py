@@ -3,10 +3,12 @@ from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
 from apikey import Credentials
 from DBactions import db_api
+from DBactions import pelion_parser
 import requests
 
-service_address = '85.23.119.250'
+service_address = '85.23.118.231'
 mongo = db_api('localhost', 5051)
+parser = pelion_parser()
 
 def create_app():
     app = Flask(__name__)
@@ -59,7 +61,7 @@ def create_app():
             headers = {'Authorization': Credentials.apikey}
             payload = {"url": service_address + '/callback'}
             resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers, data=payload)
-            print('resp.json(): ',resp.json())
+            print('resp.json(): ',resp.text)
             return resp.json()
         
         def get(self, device_id, endpoint):
@@ -99,11 +101,14 @@ def create_app():
         """
         Callback url for receiving notifications from Pelion
         """
-        def put(self, callback_id, device_id):
-            console.log('GOT A CALLBACK MESSAGE!!')
+        def put(self):
+            print('GOT A CALLBACK MESSAGE!')
+            print(api.payload)
+            print('Encoded: ', parser.base64_to_str(api.payload['notifications'][0]['payload']))
+            #pull_data(api.payload)
             payload = api.payload
-            post_ids = db_api.insert_data(payload, collection=device_id)
-            return post_ids, 200
+            # post_ids = db_api.insert_data(payload, collection=device_id)
+            return # post_ids, 200
 
     return app
 

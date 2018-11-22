@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import base64
 
 class db_api:
     def __init__(self, address, port):
@@ -28,3 +29,9 @@ class db_api:
         post_ids = coll.insert_many(data)
         return(post_ids)
 
+class pelion_parser:
+    def __init__(self):
+        pass
+
+    def base64_to_str(self, string):
+        return base64.b64decode(string)
