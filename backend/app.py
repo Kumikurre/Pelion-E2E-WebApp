@@ -14,6 +14,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
     api = Api(app)
+    database = db_api('127.0.0.1', 5000)
     ns = api.namespace('Pelion_E2E_Api', description='IoT device API')
     
 
@@ -103,11 +104,17 @@ def create_app():
         """
         def put(self):
             print('GOT A CALLBACK MESSAGE!')
-            print(api.payload)
-            print('Encoded: ', parser.base64_to_str(api.payload['notifications'][0]['payload']))
+            print('payload: ', api.payload)
+            print(request.get_json())
+            try:
+                pass
+                #print('Encoded: ', parser.base64_to_str(api.payload['notifications'][0]['payload']))
+            except TypeError:
+                print(api.payload)
             #pull_data(api.payload)
             payload = api.payload
-            # post_ids = db_api.insert_data(payload, collection=device_id)
+            for notification in api.payload['notifications']:
+                post_ids = db_api.insert_data(self, data=notification, db='testdb',collection=api.payload['device_id'])
             return # post_ids, 200
 
     return app
