@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class DataService {
 
-  private deviceListSource = new BehaviorSubject();
+  private deviceListSource = new BehaviorSubject('a');
   currentDeviceList = this.deviceListSource.asObservable();
 
   constructor() { }

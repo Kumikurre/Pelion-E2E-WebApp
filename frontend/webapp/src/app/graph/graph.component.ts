@@ -15,7 +15,7 @@ export class GraphComponent implements OnInit {
   public device_id: string;
 
   public pollingData:any;
-  public lineChartData:Array<any>;
+  public lineChartData:any;
   public lineChartLabels:any;
   public lineChartOptions:any = {
     responsive: true
