@@ -1,7 +1,7 @@
 <div id="resourcecomponent">
     <button (click)="logStuff()">Log endpoints</button>
 
-    <div *ngIf="endpoints">
+    <div *ngIf="endpoints && subscriptions">
       <table id="endpoints">
         <tr>
           <th>Uri</th>
@@ -9,15 +9,14 @@
           <th>Rt</th>
           <th>Subscribed</th>
           <th></th>
-          <th></th>
         </tr>
         <tr *ngFor="let endpoint of endpoints">
           <td>{{endpoint.uri}}</td>
           <td>{{endpoint.type}}</td>
           <td>{{endpoint.rt}}</td>
-          <td><span *ngIf="(endpoint.uri == subscriptions)">Yes</span></td>
-          <td><button>Show data</button></td>
-          <td><button *ngIf="(endpoint.obs == true)" (click)="setSubscription(endpoint.uri)">Subscribe</button></td>
+          <td><p *ngIf="isSubscribed(endpoint.uri)">Yes</p></td>
+          <td><button *ngIf="endpoint.obs == true && isSubscribed(endpoint.uri) == false; else elseBlock" (click)="setSubscription(endpoint.uri)">Subscribe</button></td>
+          <ng-template #elseBlock><button class="unsubscribe" *ngIf="endpoint.obs == true" (click)="unsetSubscription(endpoint.uri)">Unsubscribe</button></ng-template>
         </tr>
   
       </table>

@@ -35,11 +35,14 @@ export class ResourceService {
     }});
   }
 
-  deleteSubscription(endpoint) {
-    return this.http.delete(this.apiUrl + '/subscriptions/' + endpoint, {
+  deleteSubscription(deviceid, endpoint) {
+    console.log('DELETE CALLED', deviceid, endpoint)
+    var asd = this.http.delete(this.apiUrl + '/subscriptions/' + deviceid + '/' + endpoint, {
       headers: {
       'Authorization': apikey
     }});
+    console.log(asd)
+    return asd;
   }
 
 }

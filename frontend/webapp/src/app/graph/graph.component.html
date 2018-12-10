@@ -1,0 +1,42 @@
+<div *ngIf="devicelist">
+    Select the device to draw graphs from: 
+    <select (change)="onSelect($event.target.value)">
+      <option value={}>Select device to draw graphs from</option>
+      <option *ngFor="let device of devicelist.data" value= {{device.name}}>
+        {{device.name}}
+      </option>
+    </select>
+</div>
+
+<button (click)="refresh()">Refresh</button>
+
+<div *ngIf="lineChartData">
+  <div *ngFor="let endpoint of lineChartData | keyvalue">
+      <!-- {{endpoint.key}}:{{endpoint.value.callback_time}} -->
+    <div class="row">
+      <div class="col-md-6">
+        <div style="display: block;">
+        <canvas baseChart width="300" height="100"
+                    [data]="endpoint.value.payload"
+                    [labels]="endpoint.value.callback_time"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+      <!-- <div class="col-md-6" style="margin-bottom: 10px">
+        <table class="table table-responsive table-condensed">
+          <tr>
+            <th *ngFor="let label of lineChartLabels">{{label}}</th>
+          </tr>
+          <tr *ngFor="let d of lineChartData">
+            <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
+          </tr>
+        </table>
+      </div> -->
+    </div>
+  </div>
+</div>

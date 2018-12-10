@@ -7,20 +7,28 @@ import { DeviceComponent } from './device/device.component';
 import { UserinfoComponent } from './userinfo/userinfo.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ResourcesComponent } from './resources/resources.component';
+import { GraphComponent } from './graph/graph.component';
+import { ChartsModule } from 'ng2-charts';
+import { DataService } from './data.service';
+import { ResourceService } from './resource.service';
+import { DeviceService } from './device.service';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     DeviceComponent,
     UserinfoComponent,
-    ResourcesComponent
+    ResourcesComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ChartsModule
   ],
-  providers: [],
+  providers: [DataService, ResourceService, DeviceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

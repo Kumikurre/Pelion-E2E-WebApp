@@ -1,20 +1,21 @@
 from flask import Flask, jsonify, request
 from flask_restplus import Api, Resource, fields
 from flask_cors import CORS
+import datetime
+import requests
+
 from apikey import Credentials
 from DBactions import db_api
 from DBactions import pelion_parser
-import requests
 
 service_address = '85.23.118.231'
-mongo = db_api('localhost', 5051)
 parser = pelion_parser()
 
 def create_app():
     app = Flask(__name__)
     CORS(app)
     api = Api(app)
-    database = db_api('127.0.0.1', 5000)
+    database = db_api('127.0.0.1', 5051)
     ns = api.namespace('Pelion_E2E_Api', description='IoT device API')
     
 
@@ -53,31 +54,33 @@ def create_app():
     @ns.route('/subscriptions/<device_id>/<endpoint_id>')
     class subscribe(Resource):
         """
-        Endpoint manipulates subscriptions
+        Endpoint a single subscription
         """
         def put(self, device_id, endpoint_id):
-            print('CALLING PUT SUBSCRIPTION: ', endpoint_id)
             new_endpoint_id = endpoint_id.replace('_', '/')
-            print('new endpoint id ; ',new_endpoint_id)
             headers = {'Authorization': Credentials.apikey}
-            payload = {"url": service_address + '/callback'}
-            resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers, data=payload)
-            print('resp.json(): ',resp.text)
-            return resp.json()
+            payload = {"url": "http://" + service_address + "/Pelion_E2E_Api/callback"}
+            callbackresp = requests.put('https://api.us-east-1.mbedcloud.com/v2/notification/callback', headers=headers, json=payload)
+            resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers)
+            return resp.text
         
-        def get(self, device_id, endpoint):
+        def get(self, device_id, endpoint_id):
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
             print(resp.status)
             return resp.json()
         
-        def delete(self, device_id, endpoint):
+        def delete(self, device_id, endpoint_id):
+            new_endpoint_id = endpoint_id.replace('_', '/')
             headers = {'Authorization': Credentials.apikey}
-            resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
-            return resp.json()
+            resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers)
+            return resp.text
 
     @ns.route('/subscriptions/<device_id>')
     class subscription(Resource):
+        """
+        Endpoint manages all subscriptions for a device
+        """
         def put(self, device_id, endpoint_id):
             headers = {'Authorization': Credentials.apikey}
             resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
@@ -87,10 +90,7 @@ def create_app():
             print('Getting subscriptions from device:', device_id)
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
-            print('subscriptions for device: ', device_id, ': ', resp.text)
-            method_list = [func for func in dir(resp) if callable(getattr(resp, func))]
-            print(method_list)
-            return resp.text
+            return resp.text.split()
         
         def delete(self):
             headers = {'Authorization': Credentials.apikey}
@@ -103,19 +103,36 @@ def create_app():
         Callback url for receiving notifications from Pelion
         """
         def put(self):
-            print('GOT A CALLBACK MESSAGE!')
-            print('payload: ', api.payload)
-            print(request.get_json())
-            try:
-                pass
-                #print('Encoded: ', parser.base64_to_str(api.payload['notifications'][0]['payload']))
-            except TypeError:
-                print(api.payload)
-            #pull_data(api.payload)
-            payload = api.payload
-            for notification in api.payload['notifications']:
-                post_ids = db_api.insert_data(self, data=notification, db='testdb',collection=api.payload['device_id'])
-            return # post_ids, 200
+            if api.payload == {}:
+                print('Callback registration complete')
+                return
+            elif 'notifications' in api.payload:
+                try:
+                    pass
+                    for notification in api.payload['notifications']:
+                        now = datetime.datetime.now().timestamp()
+                        notification['payload'] = float(parser.base64_to_str(notification['payload']))
+                        notification['callback_time'] = now
+                        itemid = database.insert_data('notifications', notification['ep'], notification)
+                except TypeError:
+                    print(api.payload)
+            return
+
+    @ns.route('/results/<device_id>')
+    class results(Resource):
+        def get(self, device_id):
+            final_items = {}
+            tags = database.find_keys('notifications', device_id, {}, "path")
+            items = list(database.read_all('notifications', device_id))
+            for tag in tags:
+                final_items.setdefault(tag, {})
+
+                final_items[tag]['payload'] = []
+                final_items[tag]['callback_time'] = []
+            for item in items:
+                final_items[item['path']]['payload'].append(item['payload'])
+                final_items[item['path']]['callback_time'].append(item['callback_time'])
+            return final_items
 
     return app
 
