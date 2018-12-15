@@ -23,6 +23,7 @@ def create_app():
     class user_info(Resource):
         """
         Endpoint for querying account data
+        Returns the user data from Pelion. Requires an apikey.
         """
         def get(self):
             """ User info for the account """
@@ -33,10 +34,10 @@ def create_app():
     @ns.route('/devices')
     class device(Resource):
         """
-        Endpoint for querying device data
+        Endpoint for querying device data.
         """
         def get(self):
-            """ Lists all devices """
+            """ Returns a list of all devices from Pelion. Requires an apikey. """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v3/devices/', headers=headers)
             return resp.json()
@@ -46,6 +47,8 @@ def create_app():
         def get(self, device_id):
             """ 
             Lists resource endpoints of a single device 
+            Returns a list of all endpoints for a single device from Pelion.
+            Requires an apikey and a device_id.
             """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/endpoints/' + device_id, headers=headers)
@@ -54,9 +57,12 @@ def create_app():
     @ns.route('/subscriptions/<device_id>/<endpoint_id>')
     class subscribe(Resource):
         """
-        Endpoint a single subscription
+        Endpoint for managing a single subscription
         """
         def put(self, device_id, endpoint_id):
+            """
+            Creates a new subscription in Pelion. Does not return any data.
+            """
             new_endpoint_id = endpoint_id.replace('_', '/')
             headers = {'Authorization': Credentials.apikey}
             payload = {"url": "http://" + service_address + "/Pelion_E2E_Api/callback"}
@@ -65,12 +71,18 @@ def create_app():
             return resp.text
         
         def get(self, device_id, endpoint_id):
+            """
+            Checks if a subscription exists. Does not return any data.
+            """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + endpoint, headers=headers)
             print(resp.status)
             return resp.json()
         
         def delete(self, device_id, endpoint_id):
+            """
+            Deletes an existing subscription in Pelion. Does not return any data.
+            """
             new_endpoint_id = endpoint_id.replace('_', '/')
             headers = {'Authorization': Credentials.apikey}
             resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id + '/' + new_endpoint_id, headers=headers)
@@ -82,25 +94,23 @@ def create_app():
         Endpoint manages all subscriptions for a device
         """
         def put(self, device_id, endpoint_id):
+            """ Is currently not used """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.put('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
             return resp.json()
 
         def get(self, device_id):
-            print('Getting subscriptions from device:', device_id)
+            """ Returns a list of all subscribed endpoints from Pelion """
             headers = {'Authorization': Credentials.apikey}
             resp = requests.get('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
             return resp.text.split()
         
-        def delete(self):
-            headers = {'Authorization': Credentials.apikey}
-            resp = requests.delete('https://api.us-east-1.mbedcloud.com/v2/subscriptions/' + device_id, headers=headers)
-            return resp
-        
     @ns.route('/callback')
     class callback(Resource):
         """
-        Callback url for receiving notifications from Pelion
+        Callback url for receiving notifications from Pelion.
+        This endpoint is not called by the application but rather by Pelion.
+        Does not return anything, but takes in a payload and then stores the content of this payload to a database
         """
         def put(self):
             if api.payload == {}:
@@ -120,6 +130,10 @@ def create_app():
 
     @ns.route('/results/<device_id>')
     class results(Resource):
+        """
+        Retrieves data from the database. Returns a collection of datasets for a device. 
+        All of the datasets in the collection represent a single resource that has been subscribed to.
+        """
         def get(self, device_id):
             final_items = {}
             tags = database.find_keys('notifications', device_id, {}, "path")
